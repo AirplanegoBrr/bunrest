@@ -21,7 +21,7 @@ app.ws<{data: string}>((ws, msg) => {
 (req) => ({data: "socket-data"})
 )
 
-const URL_PORT = 5555;
+const URL_PORT = 5556;
 const BASE_URL = `http://localhost:${URL_PORT}`;
 
 describe('http with websockets on test', () => {

@@ -7,7 +7,6 @@ import {
   RequestTuple,
   RouteRequestMapper,
 } from "../server/request";
-import path from "path";
 // import { encodeBase64 } from "../utils/base64";
 
 export type RouterMeta = {
@@ -62,14 +61,26 @@ export class Router implements RequestMethod {
   }
 
   attach(globalPath: string) {
+    const normalize = (base: string, sub: string) => {
+      const joined = `${base.replace(/\/+$/, "")}/${sub.replace(/^\/+/, "")}`;
+      return joined === "" ? "/" : joined;
+    };
+
     for (const k in this.localRequestMap) {
       const method = k;
       const reqArr: Array<RequestTuple> = this.localRequestMap[k];
       reqArr.forEach((v, _) => {
-        this.requestMapFunc.apply(this, [method, path.join(globalPath, v.path), v.route.handler, v.route.middlewareFuncs]);
+        const fullPath = normalize(globalPath, v.path);
+        this.requestMapFunc.apply(this, [
+          method,
+          fullPath,
+          v.route.handler,
+          v.route.middlewareFuncs,
+        ]);
       });
     }
   }
+
 
   private delegate(localPath: string, method: string, handlers: Handler[]) {
     if (localPath === '/') {

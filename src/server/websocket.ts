@@ -15,8 +15,8 @@ type DrainHandler<DataType> = (
 
 type CloseHandler<DataType> = (
     ws: ServerWebSocket<DataType>,
-      code: number,
-      reason: string,
+    code: number,
+    reason: string,
 ) => void | Promise<void>;
 
 export interface ExtraHandler<DataType> {

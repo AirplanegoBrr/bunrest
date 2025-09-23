@@ -1,4 +1,5 @@
-import { Handler, Route, RequestTuple, RouteRequestMapper } from "./request";
+import { Handler, Route, RequestTuple, RouteRequestMapper, RouteT, BunRequest } from "./request";
+import { BunResponse } from "./response";
 
 //import { encodeBase64, decodeBase64 } from "../utils/base64";
 export class TrieTree<k extends string, v extends Route> {
@@ -100,14 +101,19 @@ export interface TrieLeaf<k, v> {
 // node of trie tree
 class Node<k, v> {
   private readonly path?: string;
-  private readonly handlers: Route = {};
+  private handlers: RouteT = {
+    handler: function (req: BunRequest, res: BunResponse, next?: (err?: Error) => {}, err?: Error): void | Promise<any> {
+      throw new Error("Function not implemented.");
+    },
+    middlewareFuncs: []
+  };
   private readonly children: Node<k, v>[] = [];
 
   constructor(path?: string) {
     this.path = path;
   }
 
-  insertChild(handlers: Route) {
+  insertChild(handlers: RouteT) {
     this.handlers = handlers;
   }
 

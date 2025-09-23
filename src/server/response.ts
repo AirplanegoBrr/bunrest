@@ -1,18 +1,29 @@
+import { HeadersInit } from "bun";
+
+interface ResponseInit {
+    status: number;
+    statusText: string;
+    headers?: [string, any][] | Record<string, any> | Headers;
+}
+
 export class BunResponse {
     private response: Response;
-    private options: ResponseInit = {};
+    private options: ResponseInit = {
+        status: 0,
+        statusText: ""
+    };
 
-    status(code: number): BunResponse {
+    status(code: number): this {
         this.options.status = code;
         return this;
     }
 
-    option(option: ResponseInit): BunResponse {
+    option(option: ResponseInit): this {
         this.options = Object.assign(this.options, option);
         return this;
     }
 
-    statusText(text: string): BunResponse {
+    statusText(text: string): this {
         this.options.statusText = text;
         return this;
     }
@@ -48,7 +59,7 @@ export class BunResponse {
         return this.options.headers;
     }
 
-    headers(header: HeadersInit): BunResponse {
+    headers(header: HeadersInit): this {
         this.options.headers = header;
         return this;
     }

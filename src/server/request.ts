@@ -13,6 +13,11 @@ export type Route = (
   middlewareFuncs: Handler[]
 ) => void | Promise<any>;
 
+export interface RouteT {
+  handler: Handler,
+  middlewareFuncs: Handler[]
+}
+
 export type MiddlewareFunc = (
   req: Request,
   res: BunResponse,
@@ -70,13 +75,13 @@ export interface SSLOptions {
  * request method mapper
  */
 export interface RequestMapper {
-  get?: TrieTree<string, Handler>;
-  post?: TrieTree<string, Handler>;
-  patch?: TrieTree<string, Handler>;
-  put?: TrieTree<string, Handler>;
-  delete?: TrieTree<string, Handler>;
-  options?: TrieTree<string, Handler>;
-  head?: TrieTree<string, Handler>;
+  get?: TrieTree<string, Route>;
+  post?: TrieTree<string, Route>;
+  patch?: TrieTree<string, Route>;
+  put?: TrieTree<string, Route>;
+  delete?: TrieTree<string, Route>;
+  options?: TrieTree<string, Route>;
+  head?: TrieTree<string, Route>;
 }
 
 export interface RequestTuple {
