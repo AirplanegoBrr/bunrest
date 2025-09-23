@@ -148,7 +148,7 @@ class BunServer implements RequestMethod {
       development: process.env.SERVER_ENV !== "production",
       async fetch(req1: Request, server?: Server) {
         const req: BunRequest = await that.bunRequest(req1);
-        const res = that.responseProxy();
+        const res = that.responseProxy(req);
 
         //Allow web socket server to function:
         if(that.webSocketHandler && server?.upgrade(req1, await that.webSocketData(req))) {
@@ -241,6 +241,7 @@ class BunServer implements RequestMethod {
       query: {},
       params: {},
       headers: {},
+      cookies: new Bun.CookieMap(req.headers.get("cookies")),
       originalUrl: req.url,
     };
 
@@ -267,8 +268,8 @@ class BunServer implements RequestMethod {
     return newReq;
   }
 
-  private responseProxy(): BunResponse {
-    const bunResponse = new BunResponse();
+  private responseProxy(req: BunRequest): BunResponse {
+    const bunResponse = new BunResponse(req);
     return new Proxy(bunResponse, {
       get(target, prop, receiver) {
         if (

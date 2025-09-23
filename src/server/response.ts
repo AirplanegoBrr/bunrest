@@ -1,4 +1,5 @@
 import { HeadersInit } from "bun";
+import { BunRequest } from "./request";
 
 interface ResponseInit {
     status: number;
@@ -12,6 +13,13 @@ export class BunResponse {
         status: 0,
         statusText: ""
     };
+    private readonly request?: BunRequest;
+
+    public locals: Record<string, string>;
+
+    constructor(req?: BunRequest) {
+        this.request = req;
+    }
 
     status(code: number): this {
         this.options.status = code;
@@ -52,6 +60,11 @@ export class BunResponse {
         }
         this.options.headers[key] = value;
         return this;
+    }
+
+    setCookie(name: string, value: string, options?: { httpOnly?: boolean; maxAge?: number }) {
+        this.request.cookies.set(name, value, options);
+        this.setHeader("Set-Cookie", this.request.cookies.toSetCookieHeaders());
     }
 
     // nodejs way to get headers
