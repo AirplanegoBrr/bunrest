@@ -10,8 +10,8 @@ interface ResponseInit {
 export class BunResponse {
     private response: Response;
     private options: ResponseInit = {
-        status: 0,
-        statusText: ""
+        status: 200,
+        statusText: "OK"
     };
     private readonly request?: BunRequest;
 
