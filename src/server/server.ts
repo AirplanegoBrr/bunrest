@@ -130,7 +130,7 @@ class BunServer implements RequestMethod {
     return this.openServer(port, baseUrl, options);
   }
 
-  private openServer(
+  public openServer(
     port: string | number,
     baseUrl: string,
     options?: SSLOptions
