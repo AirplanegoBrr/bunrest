@@ -156,7 +156,7 @@ class BunServer implements RequestMethod {
         }
 
         if (req.path.endsWith('/')) {
-          req.path = req.path.slice(0, req.path.length)
+          req.path = req.path.slice(0, -1) // Remove trailing slash
         }
 
         const tree: TrieTree<string, Handler> =
