@@ -40,7 +40,7 @@ class BunServer implements RequestMethod {
   private readonly middlewares: Middleware[] = [];
   private readonly errorHandlers: Handler[] = [];
   private webSocketHandler: WebSocketHandler<unknown> | undefined
-  private webSocketData: <DataType>(req: BunRequest) => Promise<{ data: DataType}> | undefined
+  private webSocketData: <DataType>(req: BunRequest) => Promise<{ data: DataType }> | undefined
 
   get(path: string, ...handlers: Handler[]) {
     this.delegate(path, "GET", handlers);
@@ -80,7 +80,7 @@ class BunServer implements RequestMethod {
       close: extra?.close,
       drain: extra?.drain,
     } as WebSocketHandler<DataType>;
-    this.webSocketData<DataType> = data ? async (req) => ({data: await data(req)}) : undefined;
+    this.webSocketData<DataType> = data ? async (req) => ({ data: await data(req) }) : undefined;
   }
 
   /**
@@ -151,12 +151,16 @@ class BunServer implements RequestMethod {
         const res = that.responseProxy(req);
 
         //Allow web socket server to function:
-        if(that.webSocketHandler && server?.upgrade(req1, await that.webSocketData(req))) {
+        if (that.webSocketHandler && server?.upgrade(req1, await that.webSocketData(req))) {
           return;
         }
 
         if (req.path.endsWith('/')) {
-          req.path = req.path.slice(0, -1) // Remove trailing slash
+          if (req.path.length > 2) {
+            req.path = req.path.slice(0, -1); // Remove tailing slash
+          } else {
+            req.path = req.path.slice(0, req.path.length);
+          }
         }
 
         const tree: TrieTree<string, Handler> =
@@ -219,7 +223,7 @@ class BunServer implements RequestMethod {
       error(err: Error) {
         const res = that.responseProxy();
         // basically, next here is to ignore the error
-        const next = () => {};
+        const next = () => { };
         that.errorHandlers.forEach((handler) => {
           // * no request object pass to error handler
           handler.apply(that, [null, res, err, next]);
