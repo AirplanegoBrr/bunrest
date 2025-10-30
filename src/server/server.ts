@@ -245,7 +245,7 @@ class BunServer implements RequestMethod {
       query: {},
       params: {},
       headers: {},
-      cookies: new Bun.CookieMap(req.headers.get("cookies")),
+      cookies: new Bun.CookieMap(req.headers.get("cookie")),
       originalUrl: req.url,
     };
 
