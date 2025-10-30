@@ -1,4 +1,4 @@
-import { HeadersInit } from "bun";
+import { CookieInit, HeadersInit } from "bun";
 import { BunRequest } from "./request";
 
 interface ResponseInit {
@@ -62,8 +62,12 @@ export class BunResponse {
         return this;
     }
 
-    setCookie(name: string, value: string, options?: { httpOnly?: boolean; maxAge?: number }) {
-        this.request.cookies.set(name, value, options);
+    setCookie(name: string, value: string, options?: CookieInit) {
+        this.request.cookies.set({
+            name: name,
+            value: value,
+            ...options
+        });
         this.setHeader("Set-Cookie", this.request.cookies.toSetCookieHeaders());
     }
 
