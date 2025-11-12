@@ -51,7 +51,7 @@ export interface BunRequest {
   params?: { [key: string]: any };
   query?: { [key: string]: any };
   body?: { [key: string]: any } | string | undefined;
-  blob?: any;
+  // blob?: any;
   cookies: Bun.CookieMap;
   originalUrl: string;
 }

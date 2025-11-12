@@ -261,8 +261,8 @@ class BunServer implements RequestMethod {
     } catch (err) {
       newReq.body = bodyStr
     }
-    req.arrayBuffer;
-    newReq.blob = req.blob();
+    // req.arrayBuffer;
+    // newReq.blob = req.blob();
 
     // append headers
     req.headers.forEach((v, k) => {
